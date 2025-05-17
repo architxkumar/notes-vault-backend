@@ -1,12 +1,17 @@
 package main
 
 import (
+	"github.com/glebarez/sqlite"
 	"github.com/gofiber/fiber/v2"
-	"notes-vault-backend/handlers"
+	"gorm.io/gorm"
+	"notes-vault-backend/handler"
 )
 
 func main() {
 	app := fiber.New()
-	app.Post("/signup", handlers.SignupHandler)
+	db, err := gorm.Open(sqlite.Open("./db/notesapp.db"), &gorm.Config{})
+	app.Post("/signup", func(ctx *fiber.Ctx) error {
+		return handler.SignupHandler(ctx, db, err)
+	})
 	app.Listen(":8080")
 }
