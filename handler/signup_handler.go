@@ -37,7 +37,8 @@ func SignupHandler(ctx *fiber.Ctx, db *gorm.DB, err error) error {
 	if len(u.Password) < 8 {
 		return fiber.NewError(fiber.StatusBadRequest, "Password must be at least 8 characters")
 	}
-	result := db.First(&u, "email = ?", u.Email)
+	var user model.User
+	result := db.First(&user, "email = ?", u.Email)
 	if result.RowsAffected != 0 {
 		return fiber.NewError(fiber.StatusConflict, "Email already exists")
 	}
