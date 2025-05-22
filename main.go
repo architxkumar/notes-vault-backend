@@ -10,6 +10,9 @@ import (
 func main() {
 	app := fiber.New()
 	db, err := gorm.Open(sqlite.Open("./db/notesapp.db"), &gorm.Config{})
+	app.Post("/login", func(c *fiber.Ctx) error {
+		return handler.LoginHandler(c, db, err)
+	})
 	app.Post("/signup", func(ctx *fiber.Ctx) error {
 		return handler.SignupHandler(ctx, db, err)
 	})
