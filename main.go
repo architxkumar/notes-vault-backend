@@ -16,5 +16,5 @@ func main() {
 	app.Post("/signup", func(ctx *fiber.Ctx) error {
 		return handler.SignupHandler(ctx, db, err)
 	})
-	app.Listen(":8080")
+	log.Fatal(app.Listen(":8080"))
 }
