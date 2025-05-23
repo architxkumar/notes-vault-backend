@@ -5,7 +5,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 	"log"
-	"notes-vault-backend/handler"
+	handler2 "notes-vault-backend/internal/handler"
 )
 
 func main() {
@@ -15,10 +15,10 @@ func main() {
 		log.Fatal(err)
 	}
 	app.Post("/login", func(c *fiber.Ctx) error {
-		return handler.LoginHandler(c, db)
+		return handler2.LoginHandler(c, db)
 	})
 	app.Post("/signup", func(ctx *fiber.Ctx) error {
-		return handler.SignupHandler(ctx, db)
+		return handler2.SignupHandler(ctx, db)
 	})
 	log.Fatal(app.Listen(":8080"))
 }

@@ -4,7 +4,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/joho/godotenv"
 	"log"
-	"notes-vault-backend/model"
+	"notes-vault-backend/internal/model"
 	"os"
 	"time"
 )

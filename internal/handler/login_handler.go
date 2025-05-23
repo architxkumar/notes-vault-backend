@@ -4,9 +4,9 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
-	"notes-vault-backend/dto"
-	"notes-vault-backend/model"
-	"notes-vault-backend/utils"
+	"notes-vault-backend/internal/dto"
+	"notes-vault-backend/internal/model"
+	utils2 "notes-vault-backend/internal/utils"
 	"strings"
 )
 
@@ -25,7 +25,7 @@ func LoginHandler(c *fiber.Ctx, db *gorm.DB) error {
 	if userCredential.Email == "" || userCredential.Password == "" {
 		return fiber.ErrBadRequest
 	}
-	if utils.EmailValidator(userCredential.Email) == false {
+	if utils2.EmailValidator(userCredential.Email) == false {
 		return fiber.NewError(fiber.StatusUnauthorized, "Invalid email address or password")
 	}
 	if len(userCredential.Password) < 8 {
@@ -40,7 +40,7 @@ func LoginHandler(c *fiber.Ctx, db *gorm.DB) error {
 	if err != nil {
 		return fiber.NewError(fiber.StatusUnauthorized, "Invalid email address or password")
 	}
-	jwtToken, err := utils.JwtGenerator(user)
+	jwtToken, err := utils2.JwtGenerator(user)
 	if err != nil {
 		return fiber.ErrInternalServerError
 	}

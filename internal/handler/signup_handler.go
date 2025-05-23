@@ -7,9 +7,9 @@ import (
 	_ "github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
-	"notes-vault-backend/dto"
-	"notes-vault-backend/model"
-	"notes-vault-backend/utils"
+	"notes-vault-backend/internal/dto"
+	"notes-vault-backend/internal/model"
+	utils2 "notes-vault-backend/internal/utils"
 	"strings"
 )
 
@@ -27,7 +27,7 @@ func SignupHandler(ctx *fiber.Ctx, db *gorm.DB) error {
 	if u.Email == "" || u.Password == "" {
 		return fiber.NewError(fiber.StatusBadRequest, "Email or Password is empty")
 	}
-	if utils.EmailValidator(u.Email) == false {
+	if utils2.EmailValidator(u.Email) == false {
 		return fiber.NewError(fiber.StatusBadRequest, "Invalid Email")
 	}
 	if len(u.Password) < 8 {
@@ -50,7 +50,7 @@ func SignupHandler(ctx *fiber.Ctx, db *gorm.DB) error {
 		log.Error(err)
 		return fiber.ErrInternalServerError
 	}
-	token, err := utils.JwtGenerator(databaseEntry)
+	token, err := utils2.JwtGenerator(databaseEntry)
 	if err != nil {
 		log.Error(err)
 		return fiber.ErrInternalServerError
