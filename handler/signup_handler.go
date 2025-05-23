@@ -13,11 +13,7 @@ import (
 	"strings"
 )
 
-func SignupHandler(ctx *fiber.Ctx, db *gorm.DB, err error) error {
-	if err != nil {
-		log.Fatal(err)
-		return ctx.SendStatus(fiber.StatusInternalServerError)
-	}
+func SignupHandler(ctx *fiber.Ctx, db *gorm.DB) error {
 	contentType := ctx.Get("Content-Type")
 	if contentType != "application/json" {
 		return fiber.ErrUnsupportedMediaType

@@ -4,23 +4,19 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
-	"log"
 	"notes-vault-backend/dto"
 	"notes-vault-backend/model"
 	"notes-vault-backend/utils"
 	"strings"
 )
 
-func LoginHandler(c *fiber.Ctx, db *gorm.DB, err error) error {
-	if err != nil {
-		log.Fatal(err)
-		return fiber.ErrInternalServerError
-	}
+func LoginHandler(c *fiber.Ctx, db *gorm.DB) error {
+
 	if strings.Contains(c.Get("Content-type"), "application/json") == false {
 		return fiber.ErrBadRequest
 	}
 	userCredential := new(dto.LoginRequest)
-	err = c.BodyParser(userCredential)
+	err := c.BodyParser(userCredential)
 	if err != nil {
 		return fiber.ErrBadRequest
 	}
