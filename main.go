@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/glebarez/sqlite"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 	"gorm.io/gorm"
 	"log"
 	handler2 "notes-vault-backend/internal/handler"
@@ -15,6 +16,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	app.Use(logger.New())
 	app.Post("/login", func(c *fiber.Ctx) error {
 		return handler2.LoginHandler(c, db)
 	})
