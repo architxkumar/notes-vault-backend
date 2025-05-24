@@ -10,29 +10,10 @@ import (
 	"notes-vault-backend/internal/dto"
 	"notes-vault-backend/internal/model"
 	utils2 "notes-vault-backend/internal/utils"
-	"strings"
 )
 
 func SignupHandler(ctx *fiber.Ctx, db *gorm.DB) error {
-	contentType := ctx.Get("Content-Type")
-	if contentType != "application/json" {
-		return fiber.ErrUnsupportedMediaType
-	}
-	u := new(dto.SignUpRequest)
-	if err := ctx.BodyParser(u); err != nil {
-		return fiber.ErrBadRequest
-	}
-	u.Email = strings.Trim(u.Email, " ")
-	u.Password = strings.Trim(u.Password, " ")
-	if u.Email == "" || u.Password == "" {
-		return fiber.NewError(fiber.StatusBadRequest, "Email or Password is empty")
-	}
-	if utils2.EmailValidator(u.Email) == false {
-		return fiber.NewError(fiber.StatusBadRequest, "Invalid Email")
-	}
-	if len(u.Password) < 8 {
-		return fiber.NewError(fiber.StatusBadRequest, "Password must be at least 8 characters")
-	}
+	u := ctx.Locals("signup_payload").(dto.SignUpRequest)
 	var user model.User
 	result := db.First(&user, "email = ?", u.Email)
 	if result.RowsAffected != 0 {

@@ -6,6 +6,7 @@ import (
 	"gorm.io/gorm"
 	"log"
 	handler2 "notes-vault-backend/internal/handler"
+	"notes-vault-backend/internal/middleware"
 )
 
 func main() {
@@ -17,7 +18,7 @@ func main() {
 	app.Post("/login", func(c *fiber.Ctx) error {
 		return handler2.LoginHandler(c, db)
 	})
-	app.Post("/signup", func(ctx *fiber.Ctx) error {
+	app.Post("/signup", middleware.JsonContentTypeValidator, middleware.SignupValidator, func(ctx *fiber.Ctx) error {
 		return handler2.SignupHandler(ctx, db)
 	})
 	log.Fatal(app.Listen(":8080"))
