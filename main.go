@@ -10,7 +10,7 @@ import (
 
 func main() {
 	app := fiber.New()
-	db, err := gorm.Open(sqlite.Open("./db/notesapp.db"), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open("./internal/db/notesapp.db"), &gorm.Config{})
 	if err != nil {
 		log.Fatal(err)
 	}
